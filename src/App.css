@@ -36,3 +36,36 @@
     transform: rotate(360deg);
   }
 }
+
+.each_coat {
+    border: 1px solid;
+    margin: 5px;
+    padding: 5px;
+    align-items: center;
+}
+.each_coat li{
+    list-style: none;
+    vertical-align: center;
+}
+.each_coat ul{
+    padding-left: 0px;
+}
+.boxContainer {
+    display: flex;
+}
+.taiki_div {
+    border: 1px solid;
+    margin: 5px;
+    padding: 5px;
+    width: 90%;
+}
+.taiki_div ol {
+    display: flex;
+    flex-wrap: wrap;
+    width: 95%;
+}
+.taiki_div li {
+    width: 3.5em;
+    margin-left: 10px;
+    margin-right: 5px;
+}
