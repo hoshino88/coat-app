@@ -7,20 +7,9 @@ let coat1_members = [
   { id: 3, name: '③'},
   { id: 4, name: '④'},
 ];
-let coat1_Items = coat1_members.map((number) =>
-  <li>{number.name}</li>
+const intial_coat1_items = coat1_members.map((member) =>
+  <li key={member.id}>{member.name}</li>
 );
-
-function gameEnd(e) {
-    wait_members.push(coat1_members.slice());
-    coat1_members.shift();
-    coat1_members.shift();
-    coat1_members.shift();
-    coat1_members.shift();
-    coat1_members.push(wait_members.slice(0, 3));
-    App();
-    console.log('The link was clicked.');
-}
 
 let coat2_members = [
   { id: 5, name: '⑤'},
@@ -28,8 +17,8 @@ let coat2_members = [
   { id: 7, name: '⑦'},
   { id: 8, name: '⑧'},
 ];
-let coat2_Items = coat1_members.map((number) =>
-  <li>{number.name}</li>
+const intial_coat2_items = coat2_members.map((member) =>
+  <li key={member.id}>{member.name}</li>
 );
 
 let coat3_members = [
@@ -38,11 +27,11 @@ let coat3_members = [
   { id: 11, name: '⑪'},
   { id: 12, name: '⑫'},
 ];
-let coat3_Items = coat1_members.map((number) =>
-  <li>{number.name}</li>
+const intial_coat3_items = coat3_members.map((member) =>
+  <li key={member.id}>{member.name}</li>
 );
 
-let wait_members = [
+const wait_members = [
   { id: 13, name: '⑬'},
   { id: 14, name: '⑭'},
   { id: 15, name: '⑮'},
@@ -57,41 +46,71 @@ let wait_members = [
   { id: 24, name: '㉔'},
   { id: 25, name: '㉕'},
 ];
-let wait_Items = wait_members.map((number) =>
-  <li>{number.name}</li>
+const intial_wait_items = wait_members.map((member) =>
+  <li key={member.id}>{member.name}</li>
 );
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div className="boxContainer">
-            <div className="each_coat">
-                1コート
-                <ul>{coat1_Items}</ul>
-                <button onClick={gameEnd}>終了</button>
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            coat1_items: intial_coat1_items,
+            coat2_items: intial_coat2_items,
+            coat3_items: intial_coat3_items,
+            wait_items: intial_wait_items
+        };
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <header className="App-header">
+                <div className="boxContainer">
+                    <div className="each_coat">
+                        1コート
+                        <ul>{this.state.coat1_items}</ul>
+                        <button onClick={this.onClickGameEnd}>終了</button>
+                    </div>
+                    <div className="each_coat">
+                        2コート
+                        <ul>{this.state.coat2_items}</ul>
+                        <button onClick={this.onClickGameEnd}>終了</button>
+                    </div>
+                    <div className="each_coat">
+                        3コート
+                        <ul>{this.state.coat3_items}</ul>
+                        <button onClick={this.onClickGameEnd}>終了</button>
+                    </div>
+                </div>
+                <div className="taiki_div">
+                    <ol>{this.state.wait_items}</ol>
+                </div>
+            </header>
             </div>
-            <div className="each_coat">
-                2コート
-                <ul>{coat2_Items}</ul>
-                <button>終了</button>
-            </div>
-            <div className="each_coat">
-                3コート
-                <ul>{coat3_Items}</ul>
-                <button>終了</button>
-            </div>
-        </div>
-        <div className="taiki_div">
-            <ol>{wait_Items}</ol>
-        </div>
-        <div className="taiki_div">
-            <button onClick={gameEnd}>追加</button>　
-            <button onClick={gameEnd}>削除</button>
-        </div>
-      </header>
-    </div>
-  );
+        );
+    }
+
+    onClickGameEnd = () => {
+        let wait_items_copy = this.state.wait_items.slice();
+        let coat1_items_copy = this.state.coat1_items.slice();
+
+        // コート1に入っていたメンバーを待機コート末尾にコピー
+        coat1_items_copy.map((item) => wait_items_copy.push(item));
+        // コート1を削除
+        coat1_items_copy.map((item) => coat1_items_copy.shift());
+        // 待機リスト先頭の4人をコート1にコピー
+        coat1_items_copy = wait_items_copy.slice(0, 4);
+        // コート1の内容を反映
+        this.setState({coat1_items: coat1_items_copy});
+
+        // 待機リスト先頭4人を削除
+        wait_items_copy.shift();
+        wait_items_copy.shift();
+        wait_items_copy.shift();
+        wait_items_copy.shift();
+        // 待機リストの内容を反映
+        this.setState({wait_items: wait_items_copy});
+    };    
 }
 
 export default App;
